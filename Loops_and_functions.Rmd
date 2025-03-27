@@ -1,0 +1,104 @@
+---
+title: "Loops_and_functions"
+author: "Camila Cuadrado"
+date: "2025-03-27"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+#Loadig library
+
+library(ggplot2)
+install.packages("drc")
+library(drc)
+library(tidyverse)
+
+```
+
+Functions: useful when need to perform the same code on different data and wnat to avoid copy and paste, reduce errors. 
+
+```{r}
+#Convert Farenheit to Celsius
+(5*(32 - 32)/9)
+(5*(80 - 32)/9)
+F_to_C <- function(f_temp){
+  celsius <- (5*(f_temp - 32)/9)
+  return(celsius)
+}
+```
+
+```{r}
+F_to_C(32)
+```
+
+
+Anatomy of a function
+ naming the function something using the backwards arrow. Then we type “function()”.
+
+After opening a new function we type the curly brackets. We will type the code we want to perform within the curly brackets.
+
+Inside the parentheses after function is where we put our variables separated by commas.
+
+```{r}
+sample.function <- function(... variable goes here ...){
+  .... code goes here.... 
+  return(... output ...)
+}
+```
+
+INTERATIONS
+Iterations are something you do over and over again.
+
+```{r}
+#rep
+rep("A", 3) # repeats A three times 
+rep(c("A", "B"), 5) # repeats A and B, times 
+rep(c(1,2,3,4), times = 4) # repeats 1,2,3,4, 4 times 
+rep(c(1,2,5,2), times = 4, each = 4) # repeats 1 four times, 2 four times, 5 four times, and 2 four times. 
+```
+The seq() command allows you to write sequences of numbers easily
+```{r}
+seq(from = 1, to = 7) # sequence of numbers 1 to 7
+seq(from = 0, to = 10, by = 2) # sequence of numbers from 0 to 10 by 2s 
+# combined seq() and rep()
+rep(seq(from = 0, to = 10, by = 2), times = 3, each = 2)
+```
+The seq_along() function allows you to generate a sequence of numbers based on non-integer values. This will become very useful when we want to loop over elements within a dataframe.
+
+```{r}
+# use the built in LETTERS vector for an example. 
+LETTERS
+```
+
+```{r}
+seq_along(LETTERS[1:5]) # will return 1,2,3,4,5 not the actual letters. 
+```
+
+The for loop 
+classic coding. Almost every coding language has a version of a for loop.
+
+```{r}
+for (i in 1:10) {
+print(i*2)  
+}
+```
+```{r}
+for (i in -30:100){
+  result <- F_to_C(i)
+  print(result)
+}
+```
+
+This was great, but this only printed to the console, and we cannot really do anything with those values. What if we wanted to do something with the result of the iteration?
+
+
+```{r}
+celcius.df <- NULL 
+for (i in -30:100){   
+result_i <- data.frame(F_to_C(i), i)   
+celcius.df <- rbind.data.frame(celcius.df, result_i) 
+}
+```
+
